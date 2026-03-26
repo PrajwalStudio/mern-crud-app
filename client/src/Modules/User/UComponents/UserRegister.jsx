@@ -1,8 +1,34 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, TextField, Typography, Button, Paper, Box, Grid, Checkbox, FormControlLabel } from "@mui/material";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function UserRegister() {
+
+const [formdata,setFormData]=useState({
+  name:"",
+  email:'',
+  password:'',
+  phone:'',
+  address:''
+})
+
+const handleChange = (e) => {
+  console.log({ ...formdata,[e.target.name]: e.target.value });
+  setFormData({ ...formdata,[e.target.name]: e.target.value });
+};
+const insertUser=()=>{
+  console.log("User registered",formdata)
+  axios.post("http://localhost:5000/api/users/register",formdata)
+  .then((response)=>{
+    console.log("User Registered Successfully",response.data)
+    alert("User Registerd!!")
+  })
+  .catch((error)=>{
+    console.log("Error While registering",error)  
+  })
+}
+
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)", display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: "#f1f3f6", p: 2 }}>
       <Container maxWidth="sm">
@@ -14,19 +40,19 @@ export default function UserRegister() {
           <Box component="form" sx={{ width: '100%' }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
-                <TextField fullWidth label="Full Name" variant="outlined" required />
+                <TextField fullWidth name="name" type="text" onChange={handleChange} label="Full Name" variant="outlined" required />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Email Address" variant="outlined" required />
+                <TextField fullWidth name="email" type="email" onChange={handleChange} label="Email Address" variant="outlined" required />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Set Password" type="password" variant="outlined" required />
+                <TextField fullWidth name="password"onChange={handleChange} label="Set Password" type="password" variant="outlined" required />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Mobile Number" variant="outlined" required />
+                <TextField fullWidth name="phone" type="tel" onChange={handleChange}label="Mobile Number" variant="outlined" required />
               </Grid>
               <Grid item xs={12}>
-                <TextField fullWidth label="Complete Address" variant="outlined" multiline rows={2} />
+                <TextField fullWidth name="address" type="text" onChange={handleChange}label="Complete Address" variant="outlined" multiline rows={3} />
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
@@ -52,6 +78,7 @@ export default function UserRegister() {
                 mt: 3,
                 mb: 2
               }}
+              onClick={insertUser}
             >
               CONTINUE
             </Button>

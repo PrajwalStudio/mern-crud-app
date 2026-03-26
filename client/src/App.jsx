@@ -8,7 +8,7 @@ export default function App() {
     <BrowserRouter>
       <Routes>
         <Route path='/*' element={<UserRoutes/>} />
-        <Route path='/Admin' element={<AdminRoutes/>} />
+        <Route path='/Admin/*' element={<AdminRoutes/>} />
       </Routes>
     </BrowserRouter>
   )
