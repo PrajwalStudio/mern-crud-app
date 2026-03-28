@@ -27,51 +27,51 @@ const registerUser = async (req, res) => {
         });
     }
 };
-const getUser=async(req,res)=>{
+const getUser = async (req, res) => {
     try {
-        const allUsers=await usermodel.find();
+        const allUsers = await usermodel.find();
         console.log(allUsers);
-        res.status(200).json({message:"All User Details",fetcheduser:allUsers})
+        res.status(200).json({ message: "All User Details", fetcheduser: allUsers })
     } catch (error) {
         console.log(error);
-        res.status(500).json({message:"Server error",error})
+        res.status(500).json({ message: "Server error", error })
     }
 };
-const getUserById=async(req,res)=>{
+const getUserById = async (req, res) => {
     try {
-        const userid=req.params.id
+        const userid = req.params.id
         //const {id}=req.params
-        const singleUser=await usermodel.findById(userid)
+        const singleUser = await usermodel.findById(userid)
         console.log(singleUser)
-        res.status(200).json({message:"User Found",foundUser:singleUser});
+        res.status(200).json({ message: "User Found", foundUser: singleUser });
     } catch (error) {
-         res.status(500).json({message:"User Not Found",error})
+        res.status(500).json({ message: "User Not Found", error })
     }
 }
 const deleteUser = async (req, res) => {
     try {
-        const {id}=req.params
+        const { id } = req.params
         const deleteuser = await usermodel.findByIdAndDelete(id);
         if (!deleteuser) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.status(200).json({ message: 'User deleted successfully',deletedUser: deleteuser });
+        res.status(200).json({ message: 'User deleted successfully', deletedUser: deleteuser });
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Error deleting user', error });
     }
 };
-const updateuser= async(req,res)=>{
-    
+const updateuser = async (req, res) => {
+
     try {
-        const {id}=req.params
-        const body=req.body
-        const updateduser=await usermodel.findByIdAndUpdate(id,body,{new:true})
+        const { id } = req.params
+        const body = req.body
+        const updateduser = await usermodel.findByIdAndUpdate(id, body, { new: true })
         console.log(updateduser)
-        res.status(201).json({message:"user updated",update:updateduser})
+        res.status(201).json({ message: "user updated", update: updateduser })
     } catch (error) {
         console.log(error)
-        res.status(500).json({message:"server error",error})
+        res.status(500).json({ message: "server error", error })
     }
 }
-module.exports = {updateuser,deleteUser,getUserById,getUser,registerUser};
+module.exports = { updateuser, deleteUser, getUserById, getUser, registerUser };

@@ -15,7 +15,7 @@ const Addproduct = async (req, res) => {
 
     res.status(201).json({
       message: "Product added successfully",
-      productDetails,
+      pdata:productDetails
     });
 
   } catch (error) {
@@ -25,5 +25,18 @@ const Addproduct = async (req, res) => {
     });
   }
 };
+const GetProducts = async (req, res) => {
+  try {
+    const products = await productModel.find();
+    console.log(products)
+    res.status(200).json({
+      message: "All Products",
+      fetchedProduct:products
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error fetching products" });
+  }
+};
 
-module.exports = { Addproduct };
+module.exports = { Addproduct, GetProducts };
