@@ -46,7 +46,7 @@ export default function Sidebar({ children }) {
           <IconButton color="inherit" onClick={() => setOpen(!open)}>
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">Admin Dashboard</Typography>
+          <Typography variant="h6">Admin</Typography>
         </Toolbar>
       </AppBar>
 
