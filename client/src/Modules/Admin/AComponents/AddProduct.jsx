@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Paper } from "@mui/material";
-import { blue } from "@mui/material/colors";
 
 export default function AddProduct() {
   const [form, setForm] = useState({

@@ -21,6 +21,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
 import AddIcon from "@mui/icons-material/Add";
 import Inventory2Icon from "@mui/icons-material/Inventory2";
+import CategoryIcon from "@mui/icons-material/category";
 
 import { Link } from "react-router-dom";
 
@@ -34,6 +35,7 @@ export default function Sidebar({ children }) {
     { name: "ViewUser", icon: <GroupIcon />, path: "/Admin/ViewUser" },
     { name: "ViewProducts", icon: <Inventory2Icon />, path: "/Admin/ViewProducts" },
     { name: "AddProduct", icon: <AddIcon />, path: "/Admin/AddProduct" },
+    { name: "AddCategory", icon: <CategoryIcon />, path: "/Admin/AddCategory" },
   ];
 
   return (
