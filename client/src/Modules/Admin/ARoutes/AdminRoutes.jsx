@@ -7,6 +7,7 @@ import AddProduct from '../AComponents/AddProduct'
 import AddCategory from '../AComponents/AddCategory'
 import Dashboard from '../AComponents/Dashboard'
 import ViewProducts from '../AComponents/ViewProducts'
+import ViewCategory from '../AComponents/ViewCategory'
 export default function AdminRoutes() {
   return (
     <Sidebar>
@@ -17,6 +18,7 @@ export default function AdminRoutes() {
         <Route path='/AddProduct' element={<AddProduct/>}/>
         <Route path='/Dashboard' element={<Dashboard/>}/>
         <Route path='/AddCategory' element={<AddCategory/>}/>
+        <Route path='/ManageCategory' element={<ViewCategory/>}/>
       </Routes>
     </Sidebar>
   )

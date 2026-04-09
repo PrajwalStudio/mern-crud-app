@@ -13,6 +13,7 @@ export default function AddCategory() {
   };
 
   const handleSubmit = (e) => {
+    e.preventDefault();
     axios
       .post("http://localhost:5000/api/category/add", form)
       .then((res) => {
