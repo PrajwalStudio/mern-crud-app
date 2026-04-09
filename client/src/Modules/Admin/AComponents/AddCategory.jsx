@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, Paper, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function AddCategory() {
+  const API_BASE_URL = "http://localhost:5000/api/category";
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     catname: "",
     catdesc: "",
@@ -12,18 +15,17 @@ export default function AddCategory() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/api/category/add", form)
-      .then((res) => {
-        console.log(res.data);
-        alert("Category Added Successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("Error adding category");
-      });
+
+    try {
+      await axios.post(`${API_BASE_URL}/add`, form);
+      alert("Category Added Successfully");
+      setForm({ catname: "", catdesc: "" });
+      navigate("/Admin/ManageCategory");
+    } catch {
+      alert("Error adding category");
+    }
   };
 
   return (

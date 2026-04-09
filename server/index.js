@@ -8,7 +8,20 @@ const categoryRoutes = require("./Routes/category_route");
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:5173" })); // React Vite default
+const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+                return;
+            }
+
+            callback(new Error("Not allowed by CORS"));
+        },
+    })
+);
 
 dbconnection();
 

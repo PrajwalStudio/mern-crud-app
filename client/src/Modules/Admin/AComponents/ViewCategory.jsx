@@ -17,47 +17,57 @@ import {
 } from "@mui/material";
 
 export default function ViewCategory() {
+  const API_BASE_URL = "http://localhost:5000/api/category";
   const [categories, setCategories] = useState([]);
   const [editData, setEditData] = useState(null);
 
-  const fetchCategories = () => {
-    axios
-      .get("http://localhost:5000/api/category/get")
-      .then((res) => {
-        setCategories(res.data.fetchedCategory || []);
-      })
-      .catch((err) => console.log(err));
+  const fetchCategories = async () => {
+    try {
+      const res = await axios.get(`${API_BASE_URL}/get`);
+      setCategories(res.data.fetchedCategory || []);
+    } catch {
+      alert("Error fetching categories");
+    }
   };
 
   useEffect(() => {
     fetchCategories();
   }, []);
 
-  const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:5000/api/category/delete/${id}`)
-      .then(() => {
-        setCategories((prev) => prev.filter((category) => category._id !== id));
-      })
-      .catch((err) => console.log(err));
+  const handleDelete = async (id) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    try {
+      await axios.delete(`${API_BASE_URL}/delete/${id}`);
+      setCategories((prev) => prev.filter((category) => category._id !== id));
+      alert("Category deleted successfully");
+    } catch {
+      alert("Error deleting category");
+    }
   };
 
-  const handleUpdate = () => {
-    axios
-      .put(`http://localhost:5000/api/category/update/${editData._id}`, {
+  const handleUpdate = async () => {
+    try {
+      const res = await axios.put(`${API_BASE_URL}/update/${editData._id}`, {
         catname: editData.catname,
         catdesc: editData.catdesc,
-      })
-      .then((res) => {
-        const updated = res.data.category;
-        setCategories((prev) =>
-          prev.map((category) =>
-            category._id === updated._id ? updated : category
-          )
-        );
-        setEditData(null);
-      })
-      .catch((err) => console.log(err));
+      });
+
+      const updated = res.data.category;
+      setCategories((prev) =>
+        prev.map((category) => (category._id === updated._id ? updated : category))
+      );
+      setEditData(null);
+      alert("Category updated successfully");
+    } catch {
+      alert("Error updating category");
+    }
   };
 
   return (
