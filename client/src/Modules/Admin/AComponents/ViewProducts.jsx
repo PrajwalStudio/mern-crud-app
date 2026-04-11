@@ -8,6 +8,7 @@ import {
   TableRow,
   TableContainer,
   Paper,
+  Avatar,
 } from "@mui/material";
 
 export default function ViewProducts() {
@@ -34,6 +35,9 @@ export default function ViewProducts() {
               <b>Product Name</b>
             </TableCell>
             <TableCell>
+              <b>Image</b>
+            </TableCell>
+            <TableCell>
               <b>Price</b>
             </TableCell>
             <TableCell>
@@ -41,6 +45,9 @@ export default function ViewProducts() {
             </TableCell>
             <TableCell>
               <b>Description</b>
+            </TableCell>
+            <TableCell>
+              <b>Category</b>
             </TableCell>
           </TableRow>
         </TableHead>
@@ -50,9 +57,22 @@ export default function ViewProducts() {
             <TableRow key={product._id}>
               <TableCell>{index + 1}</TableCell>
               <TableCell>{product.productname}</TableCell>
+              <TableCell>
+                <Avatar
+                  variant="rounded"
+                  src={
+                    product.productimage
+                      ? `http://localhost:5000/uploads/${product.productimage}`
+                      : ""
+                  }
+                  alt={product.productname}
+                  sx={{ width: 56, height: 56 }}
+                />
+              </TableCell>
               <TableCell>{product.productprice}</TableCell>
               <TableCell>{product.productqty}</TableCell>
               <TableCell>{product.productdesc}</TableCell>
+              <TableCell>{product.categoryid?.catname || "N/A"}</TableCell>
             </TableRow>
           ))}
         </TableBody>

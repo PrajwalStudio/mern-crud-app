@@ -6,6 +6,7 @@ import UserAbout from "../UComponents/UserAbout";
 import UserLogin from "../UComponents/UserLogin";
 import UserRegister from "../UComponents/UserRegister";
 import UserTopbar from "../UComponents/UserTopbar";
+import ViewProduct from "../UComponents/ViewProduct";
 
 export default function UserRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function UserRoutes() {
       <Routes>
         <Route path="/" element={<UserHome />} />
         <Route path="/about" element={<UserAbout />} />
+        <Route path="/viewproduct" element={<ViewProduct />} />
         <Route path="/login" element={<UserLogin />} />
         <Route path="/register" element={<UserRegister />} />
       </Routes>

@@ -82,6 +82,9 @@ export default function UserTopbar() {
             <Button color="inherit" component={Link} to="/about" sx={{ textTransform: "none", fontWeight: 600 }}>
               About
             </Button>
+            <Button color="inherit" component={Link} to="/viewproduct" sx={{ textTransform: "none", fontWeight: 600 }}>
+              View Product
+            </Button>
             <Button 
               component={Link} 
               to="/login" 
