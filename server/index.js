@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const dbconnection = require("./database");
 const userRoutes = require("./Routes/user_route");
 const productRoutes = require("./Routes/product_route");
@@ -8,6 +9,7 @@ const categoryRoutes = require("./Routes/category_route");
 const app = express();
 
 app.use(express.json());
+app.use("/uploads", express.static(path.join(__dirname, "Uploads")));
 const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
 
 app.use(

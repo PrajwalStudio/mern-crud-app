@@ -2,13 +2,22 @@ const productModel = require("../Models/product_model");
 
 const Addproduct = async (req, res) => {
   try {
-    const { pname,pprice,pqty,pdesc} = req.body;
+    const { pname, pprice, pqty, pdesc, pcategory } = req.body;
+    const imageName = req.file ? req.file.filename : null;
+
+    if (!pcategory) {
+      return res.status(400).json({
+        message: "Category is required",
+      });
+    }
 
     const productDetails = new productModel({
       productname: pname,
-      productprice: pprice,   
+      productprice: pprice,
       productqty: pqty,
-      productdesc: pdesc,     
+      productdesc: pdesc,
+      productimage: imageName,
+      categoryid: pcategory,
     });
 
     await productDetails.save();
@@ -27,11 +36,14 @@ const Addproduct = async (req, res) => {
 };
 const GetProducts = async (req, res) => {
   try {
-    const products = await productModel.find();
-    console.log(products)
+    const products = await productModel
+      .find()
+      .populate("categoryid", "catname catdesc");
+
+    console.log(products);
     res.status(200).json({
       message: "All Products",
-      fetchedProduct:products
+      fetchedProduct: products,
     });
   } catch (error) {
     console.log(error);
