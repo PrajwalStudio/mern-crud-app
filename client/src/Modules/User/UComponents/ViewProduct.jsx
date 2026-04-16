@@ -6,84 +6,91 @@ import {
   Card,
   CardMedia,
   CardContent,
-  CardActions,
   Typography,
-  Chip,
   Button,
+  Select,
+  MenuItem,
 } from "@mui/material";
 
 export default function ViewProduct() {
-  const [products, setProducts] = useState([]);
+  const [allproducts, setAllproducts] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [selectcategory, setSelectcategory] = useState("All");
 
+  const imageBaseUrl = "http://localhost:5000/uploads";
+
+  // Fetch data
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await axios.get("http://localhost:5000/api/products/get");
-        setProducts(res.data.fetchedProduct || []);
-      } catch (error) {
-        console.log("Error fetching products", error);
-      }
-    };
+    axios.get("http://localhost:5000/api/products/get")
+      .then((res) => setAllproducts(res.data.fetchedProduct))
+      .catch((err) => console.log(err));
 
-    fetchProducts();
+    axios.get("http://localhost:5000/api/category/get")
+      .then((res) => setCategory(res.data.fetchedCategory))
+      .catch((err) => console.log(err));
   }, []);
 
+  // Filter logic (simple)
+  const filteredproducts =
+    selectcategory === "All"
+      ? allproducts
+      : allproducts.filter(
+          (p) =>
+            String(p.categoryid?._id || p.categoryid) ===
+            String(selectcategory)
+        );
+
+  const productsWithImages = filteredproducts.filter((product) => product.productimage);
+
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" sx={{ mb: 3, fontWeight: 700 }}>
-        Recipe Style Product Cards
-      </Typography>
+    <Container>
+      <h2>Products with Images</h2>
 
-      <Grid container spacing={3}>
-        {products.map((product) => (
-          <Grid key={product._id} size={{ xs: 12, sm: 6, md: 4 }}>
-            <Card
-              sx={{
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                borderRadius: 3,
-              }}
-            >
-              {product.productimage && (
-                <CardMedia
-                  component="img"
-                  height="180"
-                  image={`http://localhost:5000/uploads/${product.productimage}`}
-                  alt={product.productname}
-                  sx={{ objectFit: "cover" }}
-                />
-              )}
-              <CardContent sx={{ flexGrow: 1 }}>
-                <Chip
-                  label={product.categoryid?.catname || "Uncategorized"}
-                  color="primary"
-                  size="small"
-                  sx={{ mb: 1 }}
-                />
-                <Typography variant="h6" sx={{ fontWeight: 700, mb: 0.5 }}>
-                  {product.productname}
-                </Typography>
-                <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1.5 }}>
-                  Qty: {product.productqty}
-                </Typography>
-                <Typography variant="body2" sx={{ mb: 2 }}>
-                  {product.productdesc}
-                </Typography>
-                <Typography variant="h6" color="success.main" sx={{ fontWeight: 700 }}>
-                  Rs. {product.productprice}
-                </Typography>
-              </CardContent>
+      {/* Dropdown */}
+      <Select
+        value={selectcategory}
+        onChange={(e) => setSelectcategory(e.target.value)}
+        sx={{ mb: 2, minWidth: 200 }}
+      >
+        <MenuItem value="All">All</MenuItem>
+        {category.map((c) => (
+          <MenuItem key={c._id} value={c._id}>
+            {c.catname}
+          </MenuItem>
+        ))}
+      </Select>
 
-              <CardActions sx={{ px: 2, pb: 2 }}>
-                <Button variant="contained" fullWidth>
+      {/* Cards */}
+      <Grid container spacing={2}>
+        {productsWithImages.map((p) => (
+          <Grid item xs={12} sm={6} md={4} key={p._id}>
+            <Card>
+              <CardMedia
+                component="img"
+                height="150"
+                image={`${imageBaseUrl}/${p.productimage}`}
+                alt={p.productname}
+              />
+              <CardContent>
+                <Typography variant="h6">{p.productname}</Typography>
+                <Typography>{p.productdesc}</Typography>
+                <Typography>Qty: {p.productqty}</Typography>
+                <Typography color="green">₹{p.productprice}</Typography>
+
+                <Button variant="contained" fullWidth sx={{ mt: 1 }}>
                   Add to Cart
                 </Button>
-              </CardActions>
+              </CardContent>
             </Card>
           </Grid>
         ))}
       </Grid>
+
+      {filteredproducts.length > 0 && productsWithImages.length === 0 && (
+        <Typography sx={{ mt: 2 }} color="text.secondary">
+          No selected products have images yet.
+        </Typography>
+      )}
     </Container>
   );
 }
