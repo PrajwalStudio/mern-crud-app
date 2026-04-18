@@ -1,4 +1,6 @@
 const usermodel = require("../Models/user_model");
+const jwt = require("jsonwebtoken");
+const secretKey = "mernbatch";
 
 const registerUser = async (req, res) => {
     try {
@@ -74,4 +76,34 @@ const updateuser = async (req, res) => {
         res.status(500).json({ message: "server error", error })
     }
 }
-module.exports = { updateuser, deleteUser, getUserById, getUser, registerUser };
+
+const login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        const user = await usermodel.findOne({ email, password });
+        if (user) {
+            const utoken = await jwt.sign({ id: user._id }, secretKey);
+            res.json({ success: true, message: "Login successful", user, token: utoken });
+
+        } else {
+            res.json({ success: false, message: "Invalid credentials" });
+        }
+
+
+    }
+    catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Login error", error });
+    }
+}
+const getProfile = async (req, res) => {
+    try {
+        const user = await usermodel.findById(req.userid);
+        res.json({ success: true, message: "Authorized User", udata: user });
+    }
+    catch (error) {
+        console.log(error);
+        res.json({ success: false, message: "Profile error", error });
+    }
+}
+module.exports = { updateuser, deleteUser, getUserById, getUser, registerUser, login,getProfile };
