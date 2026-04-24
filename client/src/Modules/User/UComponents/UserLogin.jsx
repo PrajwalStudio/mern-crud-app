@@ -8,10 +8,11 @@ import {
   Box,
   Grid,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function UserLogin() {
+  const navigate = useNavigate();
   const [login, setLogin] = useState({
     email: "",
     password: "",
@@ -41,6 +42,7 @@ export default function UserLogin() {
         if(res.data.success){
           localStorage.setItem("UserToken",res.data.token)
           alert(res.data.message)
+          navigate("/")
         }else{
           alert(res.data.message)
         }

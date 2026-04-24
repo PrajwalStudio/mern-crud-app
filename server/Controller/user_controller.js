@@ -106,4 +106,27 @@ const getProfile = async (req, res) => {
         res.json({ success: false, message: "Profile error", error });
     }
 }
-module.exports = { updateuser, deleteUser, getUserById, getUser, registerUser, login,getProfile };
+const updateProfile = async (req, res) => {
+    try {
+        const updatedUser = await usermodel.findByIdAndUpdate(
+            req.userid,        // coming from auth middleware
+            req.body,
+            { new: true }
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Profile updated successfully",
+            updata: updatedUser
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Update failed",
+            error: error.message
+        });
+    }
+};
+module.exports = { updateuser, deleteUser, getUserById, getUser, registerUser, login,getProfile,updateProfile };

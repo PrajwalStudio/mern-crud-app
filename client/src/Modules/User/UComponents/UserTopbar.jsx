@@ -1,6 +1,19 @@
-import React from "react";
-import { AppBar, Toolbar, Typography, Button, Box, Container, InputBase, styled } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Container,
+  InputBase,
+  styled,
+  Avatar,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 
 const Search = styled('div')(({ theme }) => ({
@@ -43,6 +56,39 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function UserTopbar() {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("UserToken") || localStorage.getItem("usertoken");
+  const settings = token ? ["Profile", "Logout"] : ["Login"];
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const open = Boolean(anchorEl);
+
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSettingClick = (setting) => {
+    handleCloseMenu();
+
+    if (setting === "Logout") {
+      localStorage.removeItem("UserToken");
+      localStorage.removeItem("usertoken");
+      navigate("/login");
+      return;
+    }
+
+    if (setting === "Profile") {
+      navigate("/update");
+      return;
+    }
+
+    navigate("/login");
+  };
+  
   return (
     <AppBar position="sticky" elevation={0} sx={{ backgroundColor: "#2874f0", color: "#fff" }}>
       <Container maxWidth="xl">
@@ -85,27 +131,29 @@ export default function UserTopbar() {
             <Button color="inherit" component={Link} to="/viewproduct" sx={{ textTransform: "none", fontWeight: 600 }}>
               View Product
             </Button>
-            <Button 
-              component={Link} 
-              to="/login" 
-              sx={{ 
-                backgroundColor: "#fff", 
-                color: "#2874f0", 
-                px: 4, 
-                textTransform: "none", 
-                fontWeight: 700,
-                borderRadius: 0.5,
-                "&:hover": { backgroundColor: "#f0f0f0" }
-              }}
+            <IconButton onClick={handleAvatarClick} sx={{ p: 0.5 }}>
+              <Avatar sx={{ width: 34, height: 34, bgcolor: "#fff", color: "#2874f0", fontWeight: 700 }}>
+                U
+              </Avatar>
+            </IconButton>
+
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleCloseMenu}
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              transformOrigin={{ vertical: "top", horizontal: "right" }}
             >
-              Login
-            </Button>
-            <Button color="inherit" component={Link} to="/register" sx={{ textTransform: "none", fontWeight: 600 }}>
-              Register
-            </Button>
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={() => handleSettingClick(setting)}>
+                  {setting}
+                </MenuItem>
+              ))}
+            </Menu>
           </Box>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
+/* */

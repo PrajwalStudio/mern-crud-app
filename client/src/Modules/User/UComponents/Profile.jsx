@@ -27,9 +27,25 @@ export default function Profile() {
       .catch((err) => {
         console.log(err);
       });
-  }, [token]); // ✅ added dependency
+  }, [token]);
 
+  const updateProfile = async () => {
+    try {
+      const res = await axios.put(
+        "http://localhost:5000/api/users/updateProfile",
+        profile,
+        {
+          headers: { "auth-token": token },
+        },
+      );
 
+      alert("Profile Updated Successfully");
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+      alert("Error updating profile");
+    }
+  };
   return (
     <Box display="flex" justifyContent="center" mt={5}>
       <Paper elevation={5} sx={{ width: 500, p: 3 }}>
@@ -71,12 +87,7 @@ export default function Profile() {
             value={profile.address}
             onChange={handleChange}
           />
-
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleUpdate}
-          >
+          <Button variant="contained" color="success" onClick={updateProfile}>
             Update Profile
           </Button>
         </Box>
