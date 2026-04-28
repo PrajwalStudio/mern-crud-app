@@ -5,6 +5,7 @@ const dbconnection = require("./database");
 const userRoutes = require("./Routes/user_route");
 const productRoutes = require("./Routes/product_route");
 const categoryRoutes = require("./Routes/category_route");
+const bookingRoutes = require("./Routes/booking_route");
 
 const app = express();
 
@@ -30,6 +31,7 @@ dbconnection();
 app.use("/api/users", userRoutes);
 app.use("/api/products",productRoutes);
 app.use("/api/category", categoryRoutes);
+app.use("/api/bookings", bookingRoutes);
 
 app.listen(5000, () => {
     console.log("Server running on port 5000");
