@@ -146,6 +146,16 @@ export default function UserTopbar() {
             >
               Products
             </Button>
+            {token && (
+              <Button
+                color="inherit"
+                component={Link}
+                to="/mybookings"
+                sx={{ textTransform: "none", fontWeight: 600 }}
+              >
+                My Bookings
+              </Button>
+            )}
             <IconButton onClick={handleAvatarClick} sx={{ p: 0.5 }}>
               <Avatar sx={{ width: 34, height: 34, bgcolor: "#fff", color: "#2874f0", fontWeight: 700 }}>
                 U
