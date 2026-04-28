@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
   Container,
-  Grid,
   Card,
   CardMedia,
   CardContent,
@@ -12,8 +11,10 @@ import {
   MenuItem,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export default function ViewProduct() {
+  const navigate = useNavigate();
   const [allproducts, setAllproducts] = useState([]);
   const [category, setCategory] = useState([]);
   const [selectcategory, setSelectcategory] = useState("All");
@@ -44,7 +45,7 @@ export default function ViewProduct() {
   return (
     <Container maxWidth="xl" sx={{ py: 3 }}>
       <Typography variant="h4" fontWeight={700} sx={{ mb: 2.5 }}>
-        Products with Images
+        List of Products
       </Typography>
 
       {/* Dropdown */}
@@ -62,30 +63,41 @@ export default function ViewProduct() {
       </Select>
 
       {/* Cards */}
-      <Grid container spacing={3}>
+      <Box
+        sx={{
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr",
+            sm: "repeat(2, minmax(0, 1fr))",
+            md: "repeat(3, minmax(0, 1fr))",
+            lg: "repeat(4, minmax(0, 1fr))",
+          },
+          gap: 3,
+        }}
+      >
         {filteredproducts.map((p) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={p._id} sx={{ display: "flex" }}>
-            <Card
-              sx={{
-                borderRadius: 4,
-                overflow: "hidden",
-                width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                height: 460,
-                border: "1px solid",
-                borderColor: "grey.200",
-                boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
-                transition: "transform 0.25s ease, box-shadow 0.25s ease",
-                "&:hover": {
-                  transform: "translateY(-6px)",
-                  boxShadow: "0 18px 40px rgba(15, 23, 42, 0.14)",
-                },
-              }}
-            >
+          <Card
+            key={p._id}
+            sx={{
+              borderRadius: 4,
+              overflow: "hidden",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              minHeight: 420,
+              border: "1px solid",
+              borderColor: "grey.200",
+              boxShadow: "0 10px 24px rgba(15, 23, 42, 0.08)",
+              transition: "transform 0.25s ease, box-shadow 0.25s ease",
+              "&:hover": {
+                transform: "translateY(-6px)",
+                boxShadow: "0 18px 40px rgba(15, 23, 42, 0.14)",
+              },
+            }}
+          >
               <Box
                 sx={{
-                  height: 220,
+                  height: 180,
                   p: 1.5,
                   background: "linear-gradient(180deg, #f8fafc 0%, #eef2f7 100%)",
                 }}
@@ -122,7 +134,6 @@ export default function ViewProduct() {
                   display: "flex",
                   flexDirection: "column",
                   flexGrow: 1,
-                  height: 240,
                 }}
               >
                 <Typography
@@ -160,26 +171,27 @@ export default function ViewProduct() {
                   ₹{p.productprice}
                 </Typography>
 
-                <Button
-                  variant="contained"
-                  fullWidth
-                  sx={{
-                    mt: "auto",
-                    borderRadius: 2,
-                    pt: 1,
-                    pb: 1,
-                    textTransform: "none",
-                    fontWeight: 700,
-                    boxShadow: "none",
-                  }}
-                >
-                  Add to Cart
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
+                <Box sx={{ display: "flex", gap: 1, mt: "auto", alignItems: 'center' }}>
+                  <Button
+                    variant="outlined"
+                    sx={{ borderRadius: 2, textTransform: "none", whiteSpace: "nowrap", flex: 1 }}
+                    onClick={() => navigate(`/product/${p._id}`)}
+                  >
+                    View More
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    sx={{ borderRadius: 2, textTransform: "none", whiteSpace: "nowrap" }}
+                    onClick={() => navigate(`/booking/${p._id}`)}
+                  >
+                    Book Now
+                  </Button>
+                </Box>
+            </CardContent>
+          </Card>
         ))}
-      </Grid>
+      </Box>
 
       {filteredproducts.length === 0 && (
         <Typography sx={{ mt: 2 }} color="text.secondary">

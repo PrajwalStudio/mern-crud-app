@@ -121,15 +121,30 @@ export default function UserTopbar() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          <Box sx={{ display: "flex", gap: 3, alignItems: "center" }}>
-            <Button color="inherit" component={Link} to="/" sx={{ textTransform: "none", fontWeight: 600 }}>
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/"
+              sx={{ textTransform: "none", fontWeight: 600 }}
+            >
               Home
             </Button>
-            <Button color="inherit" component={Link} to="/about" sx={{ textTransform: "none", fontWeight: 600 }}>
+            <Button
+              color="inherit"
+              component={Link}
+              to="/about"
+              sx={{ textTransform: "none", fontWeight: 600 }}
+            >
               About
             </Button>
-            <Button color="inherit" component={Link} to="/viewproduct" sx={{ textTransform: "none", fontWeight: 600 }}>
-              View Product
+            <Button
+              color="inherit"
+              component={Link}
+              to="/viewproduct"
+              sx={{ textTransform: "none", fontWeight: 600 }}
+            >
+              Products
             </Button>
             <IconButton onClick={handleAvatarClick} sx={{ p: 0.5 }}>
               <Avatar sx={{ width: 34, height: 34, bgcolor: "#fff", color: "#2874f0", fontWeight: 700 }}>

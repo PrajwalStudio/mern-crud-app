@@ -33,9 +33,9 @@ export default function Sidebar({ children }) {
 
   const menu = [
     { name: "Dashboard", icon: <DashboardIcon />, path: "/Admin/Dashboard" },
-    { name: "ViewUser", icon: <GroupIcon />, path: "/Admin/ViewUser" },
-    { name: "ViewProducts", icon: <Inventory2Icon />, path: "/Admin/ViewProducts" },
-    { name: "AddProduct", icon: <AddIcon />, path: "/Admin/AddProduct" },
+    { name: "View Users", icon: <GroupIcon />, path: "/Admin/ViewUser" },
+    { name: "View Products", icon: <Inventory2Icon />, path: "/Admin/ViewProducts" },
+    { name: "Add Product", icon: <AddIcon />, path: "/Admin/AddProduct" },
     { name: "Add Category", icon: <AddBoxIcon />, path: "/Admin/AddCategory" },
     { name: "Manage Category", icon: <CategoryIcon />, path: "/Admin/ManageCategory" },
   ];
